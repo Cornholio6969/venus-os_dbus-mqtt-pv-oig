@@ -245,6 +245,39 @@ def on_message(client, userdata, msg):
                     pv_L3_frequency = None
                     pv_L3_forward = None
 
+                elif "OutputPower" in jsonpayload:
+                    pv_power = float(jsonpayload.get("OutputPower", 0))
+                    pv_power_above_threshold = pv_power > standby_power
+                    pv_power = pv_power if pv_power_above_threshold else 0.0
+
+                    pv_current = pv_power / float(config["DEFAULT"]["voltage"]) if pv_power_above_threshold else 0.0
+                    pv_voltage = float(jsonpayload.get("L1ThreePhaseGridVoltage", float(config["DEFAULT"]["voltage"])))
+                    pv_forward = float(jsonpayload.get("TotalGenerateEnergy")) if "TotalGenerateEnergy" in jsonpayload else None
+
+                    # L1
+                    pv_L1_power = float(jsonpayload.get("L1ThreePhaseGridOutputPower", 0))
+                    pv_L1_current = float(jsonpayload.get("L1ThreePhaseGridOutputCurrent", pv_L1_power / float(config["DEFAULT"]["voltage"])))
+                    pv_L1_voltage = float(jsonpayload.get("L1ThreePhaseGridVoltage", float(config["DEFAULT"]["voltage"])))
+                    pv_L1_frequency = float(jsonpayload.get("GridFrequency", float(config["DEFAULT"]["frequency"])))
+                    pv_L1_power_factor = None
+                    pv_L1_forward = None
+
+                    # L2
+                    pv_L2_power = float(jsonpayload.get("L2ThreePhaseGridOutputPower", 0))
+                    pv_L2_current = float(jsonpayload.get("L2ThreePhaseGridOutputCurrent", pv_L2_power / float(config["DEFAULT"]["voltage"])))
+                    pv_L2_voltage = float(jsonpayload.get("L2ThreePhaseGridVoltage", float(config["DEFAULT"]["voltage"])))
+                    pv_L2_frequency = float(jsonpayload.get("GridFrequency", float(config["DEFAULT"]["frequency"])))
+                    pv_L2_power_factor = None
+                    pv_L2_forward = None
+
+                    # L3
+                    pv_L3_power = float(jsonpayload.get("L3ThreePhaseGridOutputPower", 0))
+                    pv_L3_current = float(jsonpayload.get("L3ThreePhaseGridOutputCurrent", pv_L3_power / float(config["DEFAULT"]["voltage"])))
+                    pv_L3_voltage = float(jsonpayload.get("L3ThreePhaseGridVoltage", float(config["DEFAULT"]["voltage"])))
+                    pv_L3_frequency = float(jsonpayload.get("GridFrequency", float(config["DEFAULT"]["frequency"])))
+                    pv_L3_power_factor = None
+                    pv_L3_forward = None
+
                 else:
                     logging.error('Received JSON MQTT message does not include a pv object. Expected at least: {"pv": {"power": 0.0}}')
                     logging.debug("MQTT payload: " + str(msg.payload)[1:])

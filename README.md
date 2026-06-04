@@ -255,6 +255,30 @@ Tasmota Full Topic: %topic%/
 config.ini topic = SML/SENSOR
 ```
 
+### OpenInverterGateway
+
+```json
+{
+    "OutputPower": 1232.7,
+    "GridFrequency": 50.03,
+    "L1ThreePhaseGridVoltage": 229.8,
+    "L1ThreePhaseGridOutputCurrent": 2.4,
+    "L1ThreePhaseGridOutputPower": 551.5,
+    "L2ThreePhaseGridVoltage": 230.0,
+    "L2ThreePhaseGridOutputCurrent": 2.5,
+    "L2ThreePhaseGridOutputPower": 575.0,
+    "L3ThreePhaseGridVoltage": 230.3,
+    "L3ThreePhaseGridOutputCurrent": 2.5,
+    "L3ThreePhaseGridOutputPower": 106.2,
+    "TotalGenerateEnergy": 145606.8
+}
+```
+
+Only `OutputPower` is required. All other fields are optional.
+
+Ensure OpenInverterGateway publishes to the same MQTT topic as configured in `config.ini`.
+
+
 Additional information can be found in this [issue](https://github.com/mr-manuel/venus-os_dbus-mqtt-grid/issues/13#issue-2045377392).
 
 
